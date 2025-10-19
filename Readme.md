@@ -65,3 +65,80 @@ This tool automates the ER-to-Relational mapping process, ensuring consistency a
 It produces clear, visual representations of relational schemas and demonstrates strong understanding of database modeling concepts combined with practical Python implementation.
 
 ---
+
+# Linear Algebra–Style Relational Query Executor
+
+## 📘 Objective
+This part of the lab implements a **Linear Algebra–style Query Executor** that performs **relational algebra operations** on datasets represented as JSON tables.  
+It supports executing formulas like `SELECT`, `PROJECT`, `JOIN`, `UNION`, `INTERSECT`, `DIFFERENCE`, and `AGGREGATE` on tabular data without using external libraries such as pandas.
+
+---
+
+## 🧩 Description
+The program reads one or more datasets from a **JSON file**, parses a **formula string** representing a relational query, and executes it step by step.
+
+It supports:
+- Loading multiple tables from a JSON input.
+- Parsing nested relational expressions.
+- Evaluating expressions recursively using relational operations.
+- Writing results to `output.csv` and printing them in tabular form.
+
+---
+
+## ⚙️ How the Code Works
+
+| Stage | Module / Function | Description |
+|--------|-------------------|--------------|
+| **1. Parsing** | `split_top_level_commas()` and `parse_formula()` | Parse the relational expression into operation and arguments while handling nested parentheses and string literals. |
+| **2. Formula Evaluation** | `eval_formula()` | Recursively evaluates relational expressions (SELECT, PROJECT, JOIN, UNION, INTERSECT, DIFFERENCE, AGGREGATE). |
+| **3. Relational Operations** | Defined in `operations.py` | Each relational operation (select, project, join, etc.) is implemented manually using Python loops and conditions. |
+| **4. Expression Evaluation** | `make_eval_func()` | Safely compiles and evaluates condition expressions for SELECT and JOIN using Python's eval in a controlled environment. |
+| **5. Output** | `print_table()` and `write_csv()` | Displays the final result as a formatted table and saves it to a CSV file. |
+
+### Example Command:
+```bash
+python main.py data.json "SELECT(Employee, Salary > 5000)"
+```
+
+---
+
+## 🧠 Main Libraries Used
+
+| Library | Purpose |
+|----------|----------|
+| `json` | Reads and parses JSON input files. |
+| `csv` | Exports results to a CSV file. |
+| `sys` | Reads command-line arguments. |
+| `typing` | Adds static type hints for code clarity. |
+
+---
+
+## 📋 Supported Operations
+
+| Operation | Description |
+|------------|--------------|
+| `SELECT(table, condition)` | Filters rows based on a boolean condition. |
+| `PROJECT(table, [fields])` | Selects specific attributes (columns). |
+| `JOIN(A, B, condition)` | Combines tuples from two tables where a condition is true. |
+| `UNION(A, B)` | Returns all tuples present in A or B (duplicates removed). |
+| `INTERSECT(A, B)` | Returns only tuples common to both A and B. |
+| `DIFFERENCE(A, B)` | Returns tuples in A that are not in B. |
+| `AGGREGATE(table, [group_by], FUNC(field))` | Computes aggregate functions (SUM, AVG, MIN, MAX, COUNT). |
+
+---
+
+## 📋 Assumptions
+1. Input JSON must follow a dictionary format where each key is a table name and each value is a list of row dictionaries.  
+2. Formulas follow the format `OPERATION(arg1, arg2, ...)` and can be nested.  
+3. Arithmetic and comparison operators in conditions follow standard Python syntax.  
+4. Aggregate functions only support numeric fields (except COUNT).  
+5. Output CSV is written to the current working directory as `output.csv`.
+
+---
+
+## 🧾 Conclusion
+This implementation provides a **lightweight in-memory relational algebra engine**.  
+It mimics linear algebra–style query execution by combining recursive parsing and Python evaluation.  
+The system demonstrates understanding of **relational algebra**, **query processing**, and **data manipulation** using core Python features without relying on external frameworks.
+
+---
