@@ -1,13 +1,13 @@
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any
 from graphviz import Digraph
 
 def add_column(
     tables,
     table_name,
     col_name,
-    primary = False,
-    foreign = False,
-    references = None,
+    primary=False,
+    foreign=False,
+    references=None,
 ):
     tables[table_name].append(
         {"name": col_name, "primary": primary, "foreign": foreign, "references": references}
@@ -18,13 +18,15 @@ def add_fks(
     entity_pk_components,
     target_table,
     ref_table,
+    rel_name,
 ):
+    """Add foreign keys prefixed by the relationship name."""
     ref_pks = entity_pk_components.get(ref_table, [])
     for pk in ref_pks:
         add_column(
             tables,
             target_table,
-            pk,
+            f"{rel_name}_{pk}",
             foreign=True,
             references={"table": ref_table, "attribute": pk},
         )
@@ -82,7 +84,7 @@ def generate_tables(data: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
                     add_column(
                         tables,
                         rt,
-                        f"{p_name}_{pk}",
+                        f"{rel_name}_{p_name}_{pk}",
                         primary=True,
                         foreign=True,
                         references={"table": p_name, "attribute": pk},
@@ -107,7 +109,7 @@ def generate_tables(data: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
                     add_column(
                         tables,
                         weak_ent,
-                        f"{owner_ent}_{pk}",
+                        f"{rel_name}_{owner_ent}_{pk}",
                         primary=True,
                         foreign=True,
                         references={"table": owner_ent, "attribute": pk},
@@ -118,11 +120,11 @@ def generate_tables(data: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
 
         # cardinalities
         if (left_card == "1") and (right_card == "1"):
-            add_fks(tables, entity_pk_components, left_name, right_name)
+            add_fks(tables, entity_pk_components, left_name, right_name, rel_name)
         elif (left_card == "1") and (right_card.upper() == "N"):
-            add_fks(tables, entity_pk_components, right_name, left_name)
+            add_fks(tables, entity_pk_components, right_name, left_name, rel_name)
         elif (right_card == "1") and (left_card.upper() == "N"):
-            add_fks(tables, entity_pk_components, left_name, right_name)
+            add_fks(tables, entity_pk_components, left_name, right_name, rel_name)
         else:
             joint_name = rel_name
             tables[joint_name] = []
@@ -131,22 +133,22 @@ def generate_tables(data: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
                 add_column(
                     tables,
                     joint_name,
-                    f"{left_name}_{pk}",
+                    f"{rel_name}_{left_name}_{pk}",
                     primary=True,
                     foreign=True,
                     references={"table": left_name, "attribute": pk},
                 )
 
-            for pk in entity_pk_components.get(right_name, []) :
+            for pk in entity_pk_components.get(right_name, []):
                 add_column(
                     tables,
                     joint_name,
-                    f"{right_name}_{pk}",
+                    f"{rel_name}_{right_name}_{pk}",
                     primary=True,
                     foreign=True,
                     references={"table": right_name, "attribute": pk},
                 )
-                
+
             for a in rel_attrs:
                 add_column(tables, joint_name, a["name"])
 
@@ -162,7 +164,7 @@ def generate_tables(data: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
             add_column(
                 tables,
                 mv_table,
-                f"{ent_name}_{pk}",
+                f"{att_name}_{ent_name}_{pk}",
                 primary=True,
                 foreign=True,
                 references={"table": ent_name, "attribute": pk},
