@@ -1,0 +1,20 @@
+PROJECT(SELECT(Employee, Salary > 6000), [Name, Salary])
+PROJECT(SELECT(SELECT(Employee, DeptID == 10), Salary > 5000), [Name])
+PROJECT(JOIN(Employee, Department, L.DeptID == R.DeptID), [Name, R.DeptName, Salary])
+PROJECT(SELECT(JOIN(Employee, Department, L.DeptID == R.DeptID), R.Location == 'Cairo'), [Name, R.DeptName])
+PROJECT(JOIN(JOIN(Employee, WorksOn, L.SSN == R.SSN), Project, R.ProjID == R.ProjID), [Name, ProjName, Hours])
+AGGREGATE(Employee, [DeptID], AVG(Salary))
+AGGREGATE(JOIN(Employee, Department, L.DeptID == R.DeptID), [R.DeptName], SUM(Salary))
+AGGREGATE(SELECT(JOIN(Employee, Department, L.DeptID == R.DeptID), R.Location == 'Cairo'), [R.DeptName], AVG(Salary))
+UNION(SELECT(Employee, Salary < 6000), SELECT(Employee, Salary > 7000))
+PROJECT(
+  SELECT(
+    JOIN(
+      JOIN(Employee, Department, L.DeptID == R.DeptID),
+      WorksOn, L.SSN == R.SSN
+    ),
+    L.R.Location == 'Cairo' and Hours > 20
+  ),
+  [Name, L.R.DeptName, Hours]
+)
+

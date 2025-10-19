@@ -1,0 +1,39 @@
+{
+  "Employee": [
+    {"SSN": 1, "Name": "Ali", "DeptID": 10, "Salary": 5000, "Age": 30},
+    {"SSN": 2, "Name": "Mona", "DeptID": 20, "Salary": 6000, "Age": 25},
+    {"SSN": 3, "Name": "Omar", "DeptID": 10, "Salary": 7000, "Age": 35},
+    {"SSN": 4, "Name": "Sara", "DeptID": 30, "Salary": 8000, "Age": 28},
+    {"SSN": 5, "Name": "Hassan", "DeptID": 20, "Salary": 5500, "Age": 32}
+  ],
+
+  "Department": [
+    {"DeptID": 10, "DeptName": "IT", "Location": "Cairo"},
+    {"DeptID": 20, "DeptName": "HR", "Location": "Giza"},
+    {"DeptID": 30, "DeptName": "Finance", "Location": "Cairo"},
+    {"DeptID": 40, "DeptName": "R&D", "Location": "Alex"}
+  ],
+
+  "Project": [
+    {"ProjID": 101, "ProjName": "Apollo", "DeptID": 10, "Budget": 100000},
+    {"ProjID": 102, "ProjName": "Hermes", "DeptID": 20, "Budget": 80000},
+    {"ProjID": 103, "ProjName": "Zeus", "DeptID": 10, "Budget": 120000},
+    {"ProjID": 104, "ProjName": "Athena", "DeptID": 30, "Budget": 60000}
+  ],
+
+  "WorksOn": [
+    {"SSN": 1, "ProjID": 101, "Hours": 20},
+    {"SSN": 1, "ProjID": 103, "Hours": 10},
+    {"SSN": 2, "ProjID": 102, "Hours": 25},
+    {"SSN": 3, "ProjID": 103, "Hours": 30},
+    {"SSN": 4, "ProjID": 104, "Hours": 15},
+    {"SSN": 5, "ProjID": 102, "Hours": 10}
+  ],
+
+  "Dependent": [
+    {"SSN": 1, "DepName": "Laila", "Age": 5},
+    {"SSN": 2, "DepName": "Youssef", "Age": 2},
+    {"SSN": 3, "DepName": "Hana", "Age": 8},
+    {"SSN": 4, "DepName": "Nour", "Age": 4}
+  ]
+}

@@ -1,0 +1,11 @@
+SELECT(table, "condition")
+PROJECT(table, [column1, column2, ...])
+JOIN(left_table, right_table, "condition")
+UNION(table1, table2)
+INTERSECT(table1, table2)
+DIFFERENCE(table1, table2)
+AGGREGATE(table, ['group_col1', 'group_col2'], FUNC(column))
+
+Examples of AGGREGATE:
+AGGREGATE(Employee, ['DeptID'], SUM(Salary))
+AGGREGATE(Employee, [], AVG(Salary))
